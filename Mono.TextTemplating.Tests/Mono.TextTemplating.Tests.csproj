@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
     <DefineConstants Condition="'$(TargetFramework)'=='net472'">$(DefineConstants);FEATURE_APPDOMAINS</DefineConstants>
     <DefaultItemExcludes>$(DefaultItemExcludes);TestCases\**</DefaultItemExcludes>
+    <RollForward>Major</RollForward>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mono.TextTemplating\Mono.TextTemplating.csproj" />

@@ -1,9 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Suppressions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Suppression>
-    <!-- fixes binary incompatibility between multitargeted versions -->
-    <DiagnosticId>CP0006</DiagnosticId>
-    <Target>M:Microsoft.VisualStudio.TextTemplating.ITextTemplatingEngineHost.ProvideTemplatingAppDomain(System.String)</Target>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.ITextTemplatingEngine</Target>
+    <Left>lib/net472/Mono.TextTemplating.dll</Left>
+    <Right>lib/net472/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.ITextTemplatingEngineHost</Target>
+    <Left>lib/net472/Mono.TextTemplating.dll</Left>
+    <Right>lib/net472/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.ITextTemplatingSession</Target>
+    <Left>lib/net472/Mono.TextTemplating.dll</Left>
+    <Right>lib/net472/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.ITextTemplatingSessionHost</Target>
+    <Left>lib/net472/Mono.TextTemplating.dll</Left>
+    <Right>lib/net472/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.IDirectiveProcessor</Target>
+    <Left>lib/net472/Mono.TextTemplating.dll</Left>
+    <Right>lib/net472/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.ITextTemplatingEngine</Target>
+    <Left>lib/netstandard2.0/Mono.TextTemplating.dll</Left>
+    <Right>lib/netstandard2.0/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.ITextTemplatingEngineHost</Target>
+    <Left>lib/netstandard2.0/Mono.TextTemplating.dll</Left>
+    <Right>lib/netstandard2.0/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.ITextTemplatingSession</Target>
+    <Left>lib/netstandard2.0/Mono.TextTemplating.dll</Left>
+    <Right>lib/netstandard2.0/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.ITextTemplatingSessionHost</Target>
+    <Left>lib/netstandard2.0/Mono.TextTemplating.dll</Left>
+    <Right>lib/netstandard2.0/Mono.TextTemplating.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Microsoft.VisualStudio.TextTemplating.IDirectiveProcessor</Target>
     <Left>lib/netstandard2.0/Mono.TextTemplating.dll</Left>
     <Right>lib/netstandard2.0/Mono.TextTemplating.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>

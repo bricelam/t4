@@ -29,8 +29,15 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
+
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.TextTemplating.ITextTemplatingEngine))]
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.TextTemplating.ITextTemplatingEngineHost))]
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.TextTemplating.ITextTemplatingSession))]
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.TextTemplating.ITextTemplatingSessionHost))]
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.TextTemplating.IDirectiveProcessor))]
 
 namespace Microsoft.VisualStudio.TextTemplating
 {
@@ -38,71 +45,5 @@ namespace Microsoft.VisualStudio.TextTemplating
 	{
 		void SetProcessingRunIsHostSpecific (bool hostSpecific);
 		bool RequiresProcessingRunIsHostSpecific { get; }
-	}
-
-	[Obsolete("Use Mono.TextTemplating.TemplatingEngine directly")]
-	public interface ITextTemplatingEngine
-	{
-		string ProcessTemplate (string content, ITextTemplatingEngineHost host);
-		string PreprocessTemplate (string content, ITextTemplatingEngineHost host, string className,
-			string classNamespace, out string language, out string [] references);
-	}
-
-	public interface ITextTemplatingEngineHost
-	{
-		object GetHostOption (string optionName);
-		bool LoadIncludeText (string requestFileName, out string content, out string location);
-		void LogErrors (CompilerErrorCollection errors);
-
-#if !FEATURE_APPDOMAINS
-		[Obsolete ("AppDomains are only supported on .NET Framework. This method will not be called on newer versions of .NET.")]
-#endif
-
-		AppDomain ProvideTemplatingAppDomain (string content);
-
-		string ResolveAssemblyReference (string assemblyReference);
-		Type ResolveDirectiveProcessor (string processorName);
-		string ResolveParameterValue (string directiveId, string processorName, string parameterName);
-		string ResolvePath (string path);
-		void SetFileExtension (string extension);
-		void SetOutputEncoding (Encoding encoding, bool fromOutputDirective);
-		IList<string> StandardAssemblyReferences { get; }
-		IList<string> StandardImports { get; }
-		string TemplateFile { get; }
-	}
-
-	[System.Diagnostics.CodeAnalysis.SuppressMessage ("Naming", "CA1710:Identifiers should have correct suffix", Justification = "API compat with Microsoft.VisualStudio.TextTemplating.dll")]
-	public interface ITextTemplatingSession :
-		IEquatable<ITextTemplatingSession>, IEquatable<Guid>, IDictionary<string, object>,
-		ICollection<KeyValuePair<string, object>>,
-		IEnumerable<KeyValuePair<string, object>>,
-		IEnumerable, ISerializable
-	{
-		Guid Id { get; }
-	}
-	
-	public interface ITextTemplatingSessionHost	
-	{
-		ITextTemplatingSession CreateSession ();
-		ITextTemplatingSession Session { get; set; }
-	}
-
-	public interface IDirectiveProcessor
-	{
-		CompilerErrorCollection Errors { get; }
-		bool RequiresProcessingRunIsHostSpecific { get; }
-
-		void FinishProcessingRun ();
-		string GetClassCodeForProcessingRun ();
-		string[] GetImportsForProcessingRun ();
-		string GetPostInitializationCodeForProcessingRun ();
-		string GetPreInitializationCodeForProcessingRun ();
-		string[] GetReferencesForProcessingRun ();
-		CodeAttributeDeclarationCollection GetTemplateClassCustomAttributes ();  //TODO
-		void Initialize (ITextTemplatingEngineHost host);
-		bool IsDirectiveSupported (string directiveName);
-		void ProcessDirective (string directiveName, IDictionary<string, string> arguments);
-		void SetProcessingRunIsHostSpecific (bool hostSpecific);
-		void StartProcessingRun (CodeDomProvider languageProvider, string templateContents, CompilerErrorCollection errors);
 	}
 }

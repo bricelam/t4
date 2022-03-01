@@ -508,6 +508,8 @@ namespace Mono.TextTemplating
 				settings.Assemblies.Add (settings.HostType.Assembly.Location);
 			}
 
+			settings.Assemblies.Add(typeof(ITextTemplatingEngineHost).Assembly.Location);
+
 			//initialize the custom processors
 			foreach (var kv in settings.DirectiveProcessors) {
 				kv.Value.Initialize (host);

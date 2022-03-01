@@ -60,7 +60,7 @@ namespace Mono.TextTemplating.Tests
 
 		public virtual AppDomain ProvideTemplatingAppDomain (string content) => null;
 
-		public virtual string ResolveAssemblyReference (string assemblyReference) => throw new NotImplementedException ();
+		public virtual string ResolveAssemblyReference (string assemblyReference) => assemblyReference;
 
 		public virtual Type ResolveDirectiveProcessor (string processorName)
 		{
