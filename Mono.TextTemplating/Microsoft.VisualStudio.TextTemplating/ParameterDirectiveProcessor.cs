@@ -1,21 +1,21 @@
-// 
+//
 // ParameterDirectiveProcessor.cs
-//  
+//
 // Author:
 //       Mikayla Hutchinson <m.j.hutchinson@gmail.com>
-// 
+//
 // Copyright (c) 2010 Novell, Inc.
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,53 +34,75 @@ using Mono.TextTemplating.CodeDomBuilder;
 
 namespace Microsoft.VisualStudio.TextTemplating
 {
-	public sealed class ParameterDirectiveProcessor : DirectiveProcessor, IRecognizeHostSpecific
+	/// <summary>
+    /// Directive processor to route simple serializable parameters from callers or the host to the template.
+    /// </summary>
+    public sealed class ParameterDirectiveProcessor : DirectiveProcessor, IRecognizeHostSpecific
 	{
 		CodeDomProvider provider;
-		
+
 		bool hostSpecific;
 		readonly List<CodeStatement> postStatements = new ();
 		readonly List<CodeTypeMember> members = new ();
-		
-		public override void StartProcessingRun (CodeDomProvider languageProvider, string templateContents, CompilerErrorCollection errors)
+
+		/// <summary>
+        /// Starts processing run.
+        /// </summary>
+        /// <param name="languageProvider">Target language provider.</param>
+        /// <param name="templateContents">The contents of the template being processed</param>
+        /// <param name="errors">collection to report processing errors in</param>
+        public override void StartProcessingRun (CodeDomProvider languageProvider, string templateContents, CompilerErrorCollection errors)
 		{
 			base.StartProcessingRun (languageProvider, templateContents, errors);
 			provider = languageProvider;
 			postStatements.Clear ();
 			members.Clear ();
 		}
-		
-		public override void FinishProcessingRun ()
+
+		/// <summary>
+        /// Nothing to do as we complete our run.
+        /// </summary>
+        public override void FinishProcessingRun ()
 		{
 			var statement = Statement.If (
 				Expression.This.Property ("Errors").Property ("HasErrors").IsEqualValue (Expression.False),
 				Then: postStatements.ToArray ()
 			);
-			
+
 			postStatements.Clear ();
 			postStatements.Add (statement);
 		}
-		
-		public override string GetClassCodeForProcessingRun ()
+
+		/// <summary>
+        /// Gets generated class code.
+        /// </summary>
+        /// <returns></returns>
+        public override string GetClassCodeForProcessingRun ()
 		{
 			return IndentHelpers.GenerateIndentedClassCode (provider, members);
 		}
-		
+
 		public override string[] GetImportsForProcessingRun ()
 		{
 			return null;
 		}
-		
-		public override string GetPostInitializationCodeForProcessingRun ()
+
+		/// <summary>
+        /// Get the code to contribute to the body of the initialize method of the generated
+        /// template processing class as a consequence of the most recent run.
+        /// This code will run after the base class' Initialize method
+        /// </summary>
+        /// <returns></returns>
+        public override string GetPostInitializationCodeForProcessingRun ()
 		{
 			return IndentHelpers.IndentSnippetText (provider, StatementsToCode (postStatements), "            ");
 		}
-		
+
 		public override string GetPreInitializationCodeForProcessingRun ()
 		{
 			return null;
 		}
-		
+
 		string StatementsToCode (List<CodeStatement> statements)
 		{
 			var options = new CodeGeneratorOptions ();
@@ -90,13 +112,21 @@ namespace Microsoft.VisualStudio.TextTemplating
 				return sw.ToString ();
 			}
 		}
-		
+
 		public override string[] GetReferencesForProcessingRun ()
 		{
 			return null;
 		}
-		
-		public override bool IsDirectiveSupported (string directiveName)
+
+		/// <summary>
+        /// Denote which properties are supported.
+        /// </summary>
+        /// <remarks>
+        /// Only the "parameter" directive is supported.
+        /// </remarks>
+        /// <param name="directiveName"></param>
+        /// <returns></returns>
+        public override bool IsDirectiveSupported (string directiveName)
 		{
 			return directiveName == "parameter";
 		}
@@ -225,13 +255,16 @@ namespace Microsoft.VisualStudio.TextTemplating
 				}));
 #endif
 		}
-		
+
 		void IRecognizeHostSpecific.SetProcessingRunIsHostSpecific (bool hostSpecific)
 		{
 			this.hostSpecific = hostSpecific;
 		}
 
-		public bool RequiresProcessingRunIsHostSpecific {
+		/// <summary>
+        /// This processor does not require a host-specific template.
+        /// </summary>
+        public bool RequiresProcessingRunIsHostSpecific {
 			get { return false; }
 		}
 	}
